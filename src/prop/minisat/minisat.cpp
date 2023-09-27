@@ -45,7 +45,7 @@ MinisatSatSolver::~MinisatSatSolver()
 }
 
 SatVariable MinisatSatSolver::toSatVariable(Minisat::Var var) {
-  if (var == var_Undef) {
+  if (var == Minisat::var_Undef) {
     return undefSatVariable;
   }
   return SatVariable(var);

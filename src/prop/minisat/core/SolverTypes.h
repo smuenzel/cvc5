@@ -44,9 +44,8 @@ class Solver;
 // so that they can be used as array indices.
 
 typedef int Var;
-#define var_Undef (-1)
 
-
+constexpr Var var_Undef = -1;
 
 struct Lit {
     int     x;
@@ -91,32 +90,14 @@ const Lit lit_Error = { -1 };  // }
 //       make sure that gcc does enough constant propagation to produce sensible
 //       code, and this appears to be somewhat fragile unfortunately.
 
-/*
-  This is to avoid multiple definitions of l_True, l_False and l_Undef if using
-  multiple copies of Minisat. IMPORTANT: if we you change the value of the
-  constants so that it is not the same in all copies of Minisat this breaks!
- */
-
-#ifndef l_True
-#define l_True  (lbool((uint8_t)0)) // gcc does not do constant propagation if these are real constants.
-#endif
-
-#ifndef l_False
-#define l_False (lbool((uint8_t)1))
-#endif
-
-#ifndef l_Undef
-#define l_Undef (lbool((uint8_t)2))
-#endif
-
 class lbool {
     uint8_t value;
 
 public:
-    explicit lbool(uint8_t v) : value(v) { }
+    constexpr explicit lbool(uint8_t v) : value(v) { }
 
-    lbool()       : value(0) { }
-    explicit lbool(bool x) : value(!x) { }
+    constexpr lbool()       : value(0) { }
+    constexpr explicit lbool(bool x) : value(!x) { }
 
     bool  operator == (lbool b) const { return ((b.value&2) & (value&2)) | (!(b.value&2)&(value == b.value)); }
     bool  operator != (lbool b) const { return !(*this == b); }
@@ -140,6 +121,9 @@ public:
 inline int   toInt  (lbool l) { return l.value; }
 inline lbool toLbool(int   v) { return lbool((uint8_t)v);  }
 
+constexpr lbool l_True = lbool((uint8_t)0);
+constexpr lbool l_False = lbool((uint8_t)1);
+constexpr lbool l_Undef = lbool((uint8_t)2);
 
 class Clause;
 typedef RegionAllocator<uint32_t>::Ref CRef;
