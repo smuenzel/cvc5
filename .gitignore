@@ -4,6 +4,7 @@
 /cvc4-*.tar.bz2
 /build/
 /doc/doxygen
+/src/rewriter/__pycache__/
 callgrind.out*
 gmon.out
 stamp-generated
@@ -14,4 +15,3 @@ generated/
 /debug/
 /deps/
 .vscode
-
